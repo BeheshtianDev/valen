@@ -10,6 +10,11 @@
   <body
     class="min-h-screen flex items-center justify-center bg-pink-200 overflow-hidden px-4"
   >
+    <p
+      id="message"
+      class="absolute top-[20%] left-1/2 -translate-x-1/2 text-pink-700 font-semibold text-lg hidden transition-all duration-300"
+    ></p>
+
     <div class="text-center w-full max-w-md relative">
       <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-10">
         Will you be my Valentine? 💖
@@ -45,9 +50,24 @@
 
     <script>
       let scale = 1;
+      let noCount = 0;
 
       const noBtn = document.getElementById("noBtn");
       const yesBtn = document.getElementById("yesBtn");
+      const messageEl = document.getElementById("message");
+
+      const teasingMessages = [
+        "Are you absolutely sure about that? 🤨",
+        "That button seems broken… try again 👀",
+        "Interesting choice... bold move 😏",
+        "You’re making this harder than it needs to be 💀",
+        "Okay okay but we both know the answer 😌💖",
+        "This is getting suspicious now 🤔",
+        "Why are you fighting destiny? 😭",
+        "The 'Yes' button is looking kinda good though 👀💕",
+        "At this point I'm taking this personally 😤",
+        "Last warning… choose wisely 😈💘",
+      ];
 
       function moveButton() {
         const viewportWidth = window.innerWidth;
@@ -70,6 +90,16 @@
 
         scale += 0.1;
         yesBtn.style.transform = `scale(${scale})`;
+
+        // Count attempts
+        noCount++;
+
+        // Every 3 attempts show a new message
+        if (noCount % 3 === 0) {
+          const index = (Math.floor(noCount / 3) - 1) % teasingMessages.length;
+          messageEl.textContent = teasingMessages[index];
+          messageEl.classList.remove("hidden");
+        }
       }
 
       function sayYes() {
@@ -78,10 +108,8 @@
 
       // Width-based behavior
       if (window.innerWidth >= 768) {
-        // Desktop → hover
         noBtn.addEventListener("mouseenter", moveButton);
       } else {
-        // Mobile → click
         noBtn.addEventListener("click", moveButton);
       }
     </script>
